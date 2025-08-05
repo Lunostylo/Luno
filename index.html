@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lüno</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: white;
+      color: black;
+    }
+
+    .franja {
+      background-color: #d4b24a;
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .titulo {
+      font-size: 44px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtitulo {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .anuncios-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      max-width: 900px;
+      margin: 40px auto;
+      flex-wrap: wrap;
+    }
+
+    .anuncio {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 400px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 20px;
+    }
+
+    .titulo-anuncio {
+      font-weight: bold;
+      font-size: 22px;
+      margin: 20px 0 10px 0;
+      text-align: center;
+    }
+
+    .precio {
+      font-weight: bold;
+      color: #d4b24a;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .carrusel-contenedor {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    .carrusel {
+      display: flex;
+      transition: transform 0.3s ease;
+      height: 100%;
+      width: 100%;
+    }
+
+    .carrusel img {
+      width: 100%;
+      height: 320px;
+      object-fit: contain; /* para que se vea completo */
+      flex-shrink: 0;
+      cursor: pointer;
+      background: #f9f9f9;
+    }
+
+    .flecha {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(212, 178, 74, 0.8);
+      border: none;
+      font-size: 30px;
+      padding: 10px 15px;
+      cursor: pointer;
+      color: white;
+      border-radius: 50%;
+      user-select: none;
+      z-index: 10;
+    }
+
+    .flecha.izquierda { left: 10px; }
+    .flecha.derecha { right: 10px; }
+
+    form {
+      margin-top: 15px;
+    }
+
+    form input[type="submit"] {
+      background-color: #d4b24a;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      color: white;
+      width: 120px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Modal grande */
+    #modalGrande {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    #modalGrande img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+
+    #modalGrande .cerrar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 36px;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10000;
+    }
+
+    #modalGrande .flecha-modal {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 48px;
+      color: white;
+      background-color: rgba(212, 178, 74, 0.8);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10000;
+      user-select:none;
+    }
+
+    #modalGrande .flecha-modal.izquierda { left: 30px; }
+    #modalGrande .flecha-modal.derecha { right: 30px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Franja dorada arriba con título -->
+  <div class="franja">
+    <div class="titulo">Lüno</div>
+    <div class="subtitulo">Rocío en tu alma, luz en tus joyas</div>
+  </div>
+
+  <div class="anuncios-container">
+
+    <!-- Primer anuncio -->
+    <div class="anuncio" id="anuncio1">
+      <div class="titulo-anuncio">Collar Virgen del Rocío</div>
+      <div class="precio">14,00 €</div>
+      <div class="carrusel-contenedor">
+        <button class="flecha izquierda" onclick="cambiarImagen(1, -1)">‹</button>
+        <div class="carrusel" id="carrusel1">
+          <img src="https://i.imgur.com/gsxdBTH.jpg" alt="Collar 1" onclick="abrirModal(1,0)" />
+          <img src="https://i.imgur.com/wx7saKW.jpg" alt="Collar 2" onclick="abrirModal(1,1)" />
+          <img src="https://i.imgur.com/yNvNeb2.jpg" alt="Collar 3" onclick="abrirModal(1,2)" />
+        </div>
+        <button class="flecha derecha" onclick="cambiarImagen(1, 1)">›</button>
+      </div>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick" />
+        <input type="hidden" name="business" value="elpro651200@gmail.com" />
+        <input type="hidden" name="item_name" value="Collar Virgen del Rocío" />
+        <input type="hidden" name="currency_code" value="EUR" />
+        <input type="hidden" name="amount" value="13.00" />
+        <input type="submit" value="Comprar" />
+      </form>
+    </div>
+
+    <!-- Segundo anuncio -->
+    <div class="anuncio" id="anuncio2">
+      <div class="titulo-anuncio">Collar Vichy Naranja</div>
+      <div class="precio">13,00 €</div>
+      <div class="carrusel-contenedor">
+        <button class="flecha izquierda" onclick="cambiarImagen(2, -1)">‹</button>
+        <div class="carrusel" id="carrusel2">
+          <img src="https://i.imgur.com/mr9T5wD.jpg" alt="Collar 1" onclick="abrirModal(2,0)" />
+          <img src="https://i.imgur.com/eQHcWyW.jpg" alt="Collar 2" onclick="abrirModal(2,1)" />
+          <img src="https://i.imgur.com/ONz2fdm.jpg" alt="Collar 3" onclick="abrirModal(2,2)" />
+        </div>
+        <button class="flecha derecha" onclick="cambiarImagen(2, 1)">›</button>
+      </div>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick" />
+        <input type="hidden" name="business" value="elpro651200@gmail.com" />
+        <input type="hidden" name="item_name" value="Collar Vichy Naranja" />
+        <input type="hidden" name="currency_code" value="EUR" />
+        <input type="hidden" name="amount" value="14.00" />
+        <input type="submit" value="Comprar" />
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Modal para imagen grande -->
+  <div id="modalGrande">
+    <div class="cerrar" onclick="cerrarModal()">×</div>
+    <button class="flecha-modal izquierda" onclick="modalCambiarImagen(-1)">‹</button>
+    <img id="imagenModal" src="" alt="Imagen grande" />
+    <button class="flecha-modal derecha" onclick="modalCambiarImagen(1)">›</button>
+  </div>
+
+  <!-- Franja dorada abajo con información -->
+  <div class="franja">
+    <p>Teléfono: 123-456-789</p>
+    <p>Email: lunojoyas@email.com</p>
+    <p>Instagram: @luno_joyas</p>
+  </div>
+
+  <script>
+    const carruseles = {
+      1: { index: 0, total: 3 },
+      2: { index: 0, total: 3 }
+    };
+
+    function cambiarImagen(anuncio, direccion) {
+      let carrusel = document.getElementById('carrusel' + anuncio);
+      const total = carruseles[anuncio].total;
+      let idx = carruseles[anuncio].index;
+      idx = (idx + direccion + total) % total;
+      carrusel.style.transform = 'translateX(' + (-idx * 100) + '%)';
+      carruseles[anuncio].index = idx;
+    }
+
+    // Variables para modal grande
+    let modalActivo = false;
+    let modalAnuncio = null;
+    let modalIndex = null;
+
+    function abrirModal(anuncio, index) {
+      modalActivo = true;
+      modalAnuncio = anuncio;
+      modalIndex = index;
+      const modal = document.getElementById('modalGrande');
+      const img = document.getElementById('imagenModal');
+      const carruselImgs = document.getElementById('carrusel' + anuncio).children;
+      img.src = carruselImgs[index].src;
+      modal.style.display = 'flex';
+    }
+
+    function cerrarModal() {
+      modalActivo = false;
+      modalAnuncio = null;
+      modalIndex = null;
+      document.getElementById('modalGrande').style.display = 'none';
+    }
+
+    function modalCambiarImagen(direccion) {
+      if (!modalActivo) return;
+      const total = carruseles[modalAnuncio].total;
+      modalIndex = (modalIndex + direccion + total) % total;
+      const carruselImgs = document.getElementById('carrusel' + modalAnuncio).children;
+      document.getElementById('imagenModal').src = carruselImgs[modalIndex].src;
+    }
+  </script>
+</body>
+</html>
